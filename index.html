@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ A Galaxy of Friendship ✨</title>
+    <style>
+        /* --- COLOR PALETTE --- */
+        :root {
+            --pink-main: #FF69B4; /* Hot Pink */
+            --purple-main: #8A2BE2; /* Blue Violet / Deep Purple */
+            --pink-light: #FFB6C1; /* Light Pink */
+            --purple-light: #E6E6FA; /* Lavender */
+            --white: #ffffff;
+            --dark-text: #333333;
+        }
+
+        /* --- BASE STYLES --- */
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling between sections */
+        }
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--purple-light);
+            color: var(--dark-text);
+            text-align: center;
+            overflow-x: hidden;
+            position: relative; /* Needed for absolute positioning of hearts */
+        }
+
+        /* --- NAVIGATION BAR --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--pink-main), var(--purple-main));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 10px 0;
+        }
+        .navbar a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 15px 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background 0.3s, transform 0.3s;
+            border-radius: 5px;
+        }
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* --- MAIN SECTIONS (PAGES) --- */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 60px; /* Space for the fixed navbar */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .section h2 {
+            font-size: 3em;
+            color: var(--pink-main);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .section p {
+            max-width: 600px;
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: var(--dark-text);
+        }
+
+        /* --- SECTION 1: HOME/WELCOME --- */
+        #home {
+            background: linear-gradient(135deg, var(--purple-light), var(--pink-light));
+        }
+        #home h1 {
+            font-size: 4.5em;
+            color: var(--purple-main);
+            animation: pulse 4s infinite;
+            margin-bottom: 10px;
+        }
+        #home .cta-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--pink-main);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s, transform 0.3s;
+        }
+        #home .cta-button:hover {
+            background-color: var(--purple-main);
+            transform: scale(1.1);
+        }
+
+        /* --- SECTION 2: PHOTO GALLERY (Animation) --- */
+        #memories {
+            background-color: var(--white);
+        }
+        #gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+            max-width: 900px;
+        }
+        .gallery-item {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.5s;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(10%);
+            transition: transform 0.5s, filter 0.5s;
+        }
+        .gallery-item:hover {
+            transform: translateY(-10px) rotate(-1deg);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        /* --- SECTION 3 & 4 (Media & Message styles remain the same) --- */
+        #media {
+            background-color: var(--purple-light);
+        }
+        .media-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+        #special-video, audio {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        #message {
+            background: linear-gradient(45deg, var(--pink-main), var(--purple-main));
+            color: var(--white);
+        }
+        #message h2 {
+            color: var(--white);
+            text-shadow: 2px 2px 5px var(--dark-text);
+        }
+        #final-message {
+            font-size: 2em;
+            font-style: italic;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 3px solid var(--white);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.5s, transform 0.5s;
+        }
+        #final-message:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* --- HEART ANIMATION CSS --- */
+        .heart {
+            position: absolute;
+            bottom: -50px; /* Start below the viewport */
+            pointer-events: none; /* Allows clicks on content underneath */
+            color: var(--pink-main);
+            font-size: 24px;
+            opacity: 0.8;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            text-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Keyframe for the floating movement */
+        @keyframes float-up {
+            0% { 
+                transform: translateY(0) scale(1) translateX(0); 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: translateY(-100vh) scale(1.2) translateX(var(--float-x)); 
+                opacity: 0; 
+            }
+        }
+
+        /* --- KEYFRAME ANIMATIONS (General) --- */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes sparkle {
+            0% { text-shadow: none; }
+            50% { text-shadow: 0 0 10px var(--pink-light), 0 0 20px var(--purple-light); }
+            100% { text-shadow: none; }
+        }
+        .sparkle-text {
+            animation: sparkle 3s infinite;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="heart-container"></div>
+    
+    <div class="navbar">
+        <a href="#home">Home 🏠</a>
+        <a href="#memories">Memories 🖼️</a>
+        <a href="#media">Media 🎶</a>
+        <a href="#message">Message 💌</a>
+    </div>
+
+    <section id="home" class="section">
+        <h1>Welcome, My Dearest Best Friend!
+            (Shreya Singh)
+        </h1>
+        <p class="sparkle-text">I created this special space just for you, filled with our best moments, our favorite song, and a little bit of magic I hope you like it.</p>
+        <a href="#memories" class="cta-button">See Our Memories First!</a>
+    </section>
+
+    <section id="memories" class="section">
+        <h2>🖼️ A Scroll Through Time</h2>
+        
+        <div id="gallery-grid">
+            <div class="gallery-item"><img src="pic1.jpeg" alt="Memory 1"></div>
+            <div class="gallery-item"><img src="pic2.jpeg" alt="Memory 2"></div>
+            <div class="gallery-item"><img src="pic3.jpeg" alt="Memory 3"></div>
+            <div class="gallery-item"><img src="pic4.jpeg" alt="Memory 4"></div>
+            <div class="gallery-item"><img src="pic5.jpeg" alt="Memory 5"></div>
+            <div class="gallery-item"><img src="pic6.jpeg" alt="Memory 6"></div>
+        </div>
+    </section>
+
+    <section id="media" class="section">
+        <h2>🎶 Our Soundtrack & Story</h2>
+        <div class="media-container">
+            <h3>The First Moment</h3>
+            <video id="special-video" controls poster="pic8.jpg">
+                <source src="vedio1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <h3>Pehla gana jo tere liye gaya tha </h3>
+            <audio controls>
+                <source src="audio.mp4" type="audio/mp3">
+                .
+            </audio>
+        </div>
+    </section>
+
+    <section id="message" class="section">
+        <h2>💌 A Forever Promise</h2>
+        <p>Tap the message below for one final, important reminder.</p>
+        <div id="final-message" onclick="revealSecret()">
+            Click Me to See the Final Message
+        </div>
+    </section>
+
+    <script>
+        // --- FINAL MESSAGE REVEAL ---
+        function revealSecret() {
+            const messageElement = document.getElementById('final-message');
+            
+            // Text to show on click
+            const secretText = "It's difficult to express in words what you mean to me. Forget about whether I deserve you or not—you are simply the most beautiful part of my life. I love you very, very much too! Always be happy, and take care of yourself💕💜";
+            
+            if (messageElement.textContent === secretText) {
+                alert("You already know the secret! Go explore the other pages!");
+                return;
+            }
+
+            // Reveal the secret message
+            messageElement.textContent = secretText;
+            messageElement.style.background = 'var(--purple-main)';
+            messageElement.style.transform = 'scale(1.08)';
+
+            // Reset the style after a few seconds
+            setTimeout(() => {
+                 messageElement.style.background = 'transparent';
+                 messageElement.style.transform = 'scale(1.0)';
+            }, 3000);
+        }
+
+        // --- FLOATING HEARTS ANIMATION ---
+        
+        // Define the heart character
+        const heartChar = '💖'; 
+        const container = document.getElementById('heart-container');
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = heartChar;
+
+            // Randomize starting position (x-axis)
+            const left = Math.random() * window.innerWidth;
+            heart.style.left = `${left}px`;
+
+            // Randomize size slightly
+            const size = 18 + Math.random() * 12; // 18px to 30px
+            heart.style.fontSize = `${size}px`;
+
+            // Randomize animation duration (slower = more graceful)
+            const duration = 8 + Math.random() * 7; // 8s to 15s
+            heart.style.animationDuration = `${duration}s`;
+
+            // Randomize horizontal float offset (CSS Variable for keyframe)
+            const floatX = (Math.random() - 0.5) * 100; // -50px to 50px of horizontal drift
+            heart.style.setProperty('--float-x', `${floatX}px`);
+
+            container.appendChild(heart);
+
+            // Remove heart after animation finishes to prevent memory leak
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        // Function to continuously spawn new hearts
+        function spawnHearts() {
+            // Spawn 1 to 3 hearts every 500 milliseconds
+            const count = 1 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < count; i++) {
+                createHeart();
+            }
+        }
+
+        // Start the continuous heart spawning
+        setInterval(spawnHearts, 500); 
+
+    </script>
+
+</body>
+</html>
